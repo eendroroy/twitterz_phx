@@ -7,5 +7,7 @@ defmodule TwitterZPhxWeb.Router do
 
   scope "/api", TwitterZPhxWeb do
     pipe_through :api
+
+    resources "/users", UserController
   end
 end
