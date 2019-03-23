@@ -1,6 +1,7 @@
 defmodule TwitterZPhxWeb.UserController do
   use TwitterZPhxWeb, :controller
 
+  alias TwitterZPhxWeb.Guardian
   alias TwitterZPhx.Users
   alias TwitterZPhx.Users.User
 
@@ -33,7 +34,11 @@ defmodule TwitterZPhxWeb.UserController do
       |> put_view(TwitterZPhxWeb.ErrorView)
       |> render(:"404")
     else
-      render(conn, "login.json", user: user)
+      with {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+        with {:ok, %User{} = user} <- Users.update_user(user, %{token: token}) do
+          render(conn, "login.json", user: user)
+        end
+      end
     end
 
   end

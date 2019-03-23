@@ -42,6 +42,7 @@ defmodule TwitterZPhx.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:hal, "~> 1.0.0"},
+      {:guardian, "~> 1.0"},
     ]
   end
 

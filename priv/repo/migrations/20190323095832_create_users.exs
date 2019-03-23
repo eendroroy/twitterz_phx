@@ -7,7 +7,7 @@ defmodule TwitterZPhx.Repo.Migrations.CreateUsers do
       add :password, :string
       add :name, :string
       add :active, :boolean, default: false, null: false
-      add :token, :string
+      add :token, :text
 
       timestamps()
     end
