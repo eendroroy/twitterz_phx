@@ -25,6 +25,19 @@ defmodule TwitterZPhxWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
+  def login(conn, %{"email" => email, "password" => password}) do
+    user = Users.login_user(email, password)
+    if user == nil do
+      conn
+      |> put_status(:not_found)
+      |> put_view(TwitterZPhxWeb.ErrorView)
+      |> render(:"404")
+    else
+      render(conn, "login.json", user: user)
+    end
+
+  end
+
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Users.get_user!(id)
 
@@ -33,11 +46,11 @@ defmodule TwitterZPhxWeb.UserController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    user = Users.get_user!(id)
-
-    with {:ok, %User{}} <- Users.delete_user(user) do
-      send_resp(conn, :no_content, "")
-    end
-  end
+#  def delete(conn, %{"id" => id}) do
+#    user = Users.get_user!(id)
+#
+#    with {:ok, %User{}} <- Users.delete_user(user) do
+#      send_resp(conn, :no_content, "")
+#    end
+#  end
 end

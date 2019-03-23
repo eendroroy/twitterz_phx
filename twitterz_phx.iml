@@ -50,5 +50,8 @@
     <orderEntry type="library" name="poison" level="project" />
     <orderEntry type="library" name="earmark" level="project" />
     <orderEntry type="library" name="Elixir 1.8.1" level="application" />
+    <orderEntry type="library" name="hal" level="project" />
+    <orderEntry type="library" name="cowlib" level="project" />
+    <orderEntry type="library" name="ranch" level="project" />
   </component>
 </module>

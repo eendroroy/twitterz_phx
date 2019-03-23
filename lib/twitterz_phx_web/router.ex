@@ -8,6 +8,8 @@ defmodule TwitterZPhxWeb.Router do
   scope "/api", TwitterZPhxWeb do
     pipe_through :api
 
-    resources "/users", UserController
+    resources "/users", UserController, only: [:index, :show, :update]
+    post "/users/login", UserController, :login
+    post "/users/register", UserController, :create
   end
 end

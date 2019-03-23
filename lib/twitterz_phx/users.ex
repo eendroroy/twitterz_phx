@@ -38,6 +38,19 @@ defmodule TwitterZPhx.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Finds a user by email and password.
+
+  ## Examples
+
+      iex> login_user("user@email.com", "!@#")
+      {:ok, %User{}}
+
+  """
+  def login_user(email, password) do
+    Repo.get_by(User, email: email, password: password)
+  end
+
+  @doc """
   Creates a user.
 
   ## Examples
