@@ -2,6 +2,7 @@ defmodule TwitterZPhxWeb.UserController do
   use TwitterZPhxWeb, :controller
 
   alias TwitterZPhxWeb.Guardian
+  alias TwitterZPhx.Followings
   alias TwitterZPhx.Users
   alias TwitterZPhx.Users.User
 
@@ -48,6 +49,44 @@ defmodule TwitterZPhxWeb.UserController do
 
     with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
       render(conn, "show.json", user: user)
+    end
+  end
+
+  def follow(conn, %{"id" => id, "follow_id" => follow_id}) do
+    user = Users.get_user!(id)
+    follow = Users.get_user!(follow_id)
+    cond do
+      user == nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(TwitterZPhxWeb.ErrorView)
+        |> render(:"404")
+      follow == nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(TwitterZPhxWeb.ErrorView)
+        |> render(:"404")
+      true ->
+        Followings.add_follow(user, follow)
+    end
+  end
+
+  def un_follow(conn, %{"id" => id, "follow_id" => follow_id}) do
+    user = Users.get_user!(id)
+    follow = Users.get_user!(follow_id)
+    cond do
+      user == nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(TwitterZPhxWeb.ErrorView)
+        |> render(:"404")
+      follow == nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(TwitterZPhxWeb.ErrorView)
+        |> render(:"404")
+      true ->
+        Followings.delete_follow(user, follow)
     end
   end
 
