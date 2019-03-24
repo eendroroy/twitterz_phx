@@ -2,7 +2,8 @@ defmodule TwitterZPhxWeb.UserController do
   use TwitterZPhxWeb, :controller
 
   alias TwitterZPhxWeb.Guardian
-  alias TwitterZPhx.Followings
+  alias TwitterZPhx.Follows
+  alias TwitterZPhx.Repo
   alias TwitterZPhx.Users
   alias TwitterZPhx.Users.User
 
@@ -53,7 +54,7 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def follow(conn, %{"id" => id, "follow_id" => follow_id}) do
-    user = Users.get_user!(id)
+    user = Users.get_user!(id) |> Repo.preload(:follows)
     follow = Users.get_user!(follow_id)
     cond do
       user == nil ->
@@ -67,12 +68,14 @@ defmodule TwitterZPhxWeb.UserController do
         |> put_view(TwitterZPhxWeb.ErrorView)
         |> render(:"404")
       true ->
-        Followings.add_follow(user, follow)
+        Follows.add_follow(user, follow)
+        follows = user.follows
+        render(conn, "follows.json", follows: follows)
     end
   end
 
   def un_follow(conn, %{"id" => id, "follow_id" => follow_id}) do
-    user = Users.get_user!(id)
+    user = Users.get_user!(id) |> Repo.preload(:follows)
     follow = Users.get_user!(follow_id)
     cond do
       user == nil ->
@@ -86,8 +89,16 @@ defmodule TwitterZPhxWeb.UserController do
         |> put_view(TwitterZPhxWeb.ErrorView)
         |> render(:"404")
       true ->
-        Followings.delete_follow(user, follow)
+        Follows.delete_follow(user, follow)
+        follows = user.follows
+        render(conn, "follows.json", follows: follows)
     end
+  end
+
+  def follows(conn, %{"id" => id}) do
+    user = Users.get_user!(id) |> Repo.preload(:follows)
+    follows = user.follows
+    render(conn, "follows.json", follows: follows)
   end
 
 #  def delete(conn, %{"id" => id}) do

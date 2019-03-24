@@ -9,8 +9,8 @@ defmodule TwitterZPhx.Users.User do
     field :password, :string
     field :token, :string
 
-    has_many :_followings, TwitterZPhx.Users.Following
-    has_many :followings, through: [:_followings, :following]
+    has_many :_follows, TwitterZPhx.Users.Follow
+    has_many :follows, through: [:_follows, :follow]
 
     timestamps()
   end

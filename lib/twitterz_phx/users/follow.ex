@@ -1,4 +1,4 @@
-defmodule TwitterZPhx.Users.Following do
+defmodule TwitterZPhx.Users.Follow do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,8 +11,8 @@ defmodule TwitterZPhx.Users.Following do
   end
 
   @doc false
-  def changeset(following, attrs) do
-    following
+  def changeset(follow, attrs) do
+    follow
     |> cast(attrs, [:user_id, :follow_id])
     |> validate_required([:user_id, :follow_id])
   end

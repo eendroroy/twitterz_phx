@@ -7,6 +7,10 @@ defmodule TwitterZPhxWeb.UserView do
     render_many(users, UserView, "user.json")
   end
 
+  def render("follows.json", %{follows: follows}) do
+    render_many(follows, UserView, "user.json")
+  end
+
   def render("show.json", %{user: user}) do
     render_one(user, UserView, "user.json")
   end
