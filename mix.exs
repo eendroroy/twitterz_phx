@@ -43,6 +43,7 @@ defmodule TwitterZPhx.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:hal, "~> 1.0.0"},
       {:guardian, "~> 1.0"},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
     ]
   end
 
