@@ -53,8 +53,8 @@ defmodule TwitterZPhxWeb.UserController do
     end
   end
 
-  def follow(conn, %{"id" => id, "follow_id" => follow_id}) do
-    user = Users.get_user!(id) |> Repo.preload(:follows)
+  def follow(conn, %{"follow_id" => follow_id}) do
+    user = Guardian.Plug.current_resource(conn)
     follow = Users.get_user!(follow_id)
     cond do
       user == nil ->
@@ -69,13 +69,14 @@ defmodule TwitterZPhxWeb.UserController do
         |> render(:"404")
       true ->
         Follows.add_follow(user, follow)
+        user = Repo.preload(user, :follows)
         follows = user.follows
         render(conn, "follows.json", follows: follows)
     end
   end
 
-  def un_follow(conn, %{"id" => id, "follow_id" => follow_id}) do
-    user = Users.get_user!(id) |> Repo.preload(:follows)
+  def un_follow(conn, %{"follow_id" => follow_id}) do
+    user = Guardian.Plug.current_resource(conn)
     follow = Users.get_user!(follow_id)
     cond do
       user == nil ->
@@ -90,13 +91,14 @@ defmodule TwitterZPhxWeb.UserController do
         |> render(:"404")
       true ->
         Follows.delete_follow(user, follow)
+        user = Repo.preload(user, :follows)
         follows = user.follows
         render(conn, "follows.json", follows: follows)
     end
   end
 
-  def follows(conn, %{"id" => id}) do
-    user = Users.get_user!(id) |> Repo.preload(:follows)
+  def follows(conn, _params) do
+    user = Guardian.Plug.current_resource(conn) |> Repo.preload(:follows)
     follows = user.follows
     render(conn, "follows.json", follows: follows)
   end
