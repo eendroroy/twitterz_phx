@@ -23,9 +23,9 @@ defmodule TwitterZPhxWeb.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    user = Users.get_user!(id)
-    render(conn, "show.json", user: user)
+  def show(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    conn |> render("show.json", user: user)
   end
 
   def login(conn, %{"email" => email, "password" => password}) do
@@ -45,8 +45,8 @@ defmodule TwitterZPhxWeb.UserController do
 
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Users.get_user!(id)
+  def update(conn, %{"user" => user_params}) do
+    user = Guardian.Plug.current_resource(conn)
 
     with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
       render(conn, "show.json", user: user)
