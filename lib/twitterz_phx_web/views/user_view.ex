@@ -16,7 +16,11 @@ defmodule TwitterZPhxWeb.UserView do
   end
 
   def render("login.json", %{user: user}) do
-    render_one(user, UserView, "user.json")
+    %Document{}
+    |> Document.add_property(:active, user.active)
+    |> Document.add_property(:email, user.email)
+    |> Document.add_property(:token, user.token)
+    |> Document.add_link(%Link{rel: :self, href: "/api/users/login"})
   end
 
   def render("user.json", %{user: user}) do
@@ -25,7 +29,6 @@ defmodule TwitterZPhxWeb.UserView do
     |> Document.add_property(:email, user.email)
     |> Document.add_property(:name, user.name)
     |> Document.add_property(:active, user.active)
-    |> Document.add_property(:token, user.token)
     |> Document.add_link(%Link{rel: :self, href: "/api/users/#{user.id}"})
   end
 end
