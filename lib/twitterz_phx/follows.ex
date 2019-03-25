@@ -1,4 +1,6 @@
 defmodule TwitterZPhx.Follows do
+  @moduledoc false
+
   import Ecto.Query, warn: false
   alias TwitterZPhx.Repo
 

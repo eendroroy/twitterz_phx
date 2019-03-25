@@ -1,11 +1,11 @@
 defmodule TwitterZPhxWeb.UserController do
   use TwitterZPhxWeb, :controller
 
-  alias TwitterZPhxWeb.Guardian
   alias TwitterZPhx.Follows
   alias TwitterZPhx.Repo
   alias TwitterZPhx.Users
   alias TwitterZPhx.Users.User
+  alias TwitterZPhxWeb.Guardian
 
   action_fallback TwitterZPhxWeb.FallbackController
 
@@ -98,7 +98,8 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def follows(conn, _params) do
-    user = Guardian.Plug.current_resource(conn) |> Repo.preload(:follows)
+    user = Guardian.Plug.current_resource(conn)
+    user = Repo.preload(user, :follows)
     follows = user.follows
     render(conn, "follows.json", follows: follows)
   end

@@ -1,4 +1,5 @@
 defmodule TwitterZPhxWeb.Guardian do
+  @moduledoc false
   use Guardian, otp_app: :twitterz_phx
 
   def subject_for_token(user, _claims) do

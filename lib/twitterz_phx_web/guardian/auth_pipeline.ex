@@ -1,4 +1,6 @@
 defmodule TwitterZPhxWeb.Guardian.AuthPipeline do
+  @moduledoc false
+
   use Guardian.Plug.Pipeline, otp_app: :twitterz_phx,
                               module: TwitterZPhxWeb.Guardian,
                               error_handler: TwitterZPhxWeb.AuthErrorHandler
