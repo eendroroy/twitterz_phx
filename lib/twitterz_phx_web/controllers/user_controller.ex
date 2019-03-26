@@ -28,16 +28,14 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def login(conn, %{"email" => email, "password" => password}) do
-    user = Users.login_user(email, password)
-    if user == nil do
-      conn
-      |> put_status(:not_found)
-      |> put_view(TwitterZPhxWeb.ErrorView)
-      |> render(:"404")
-    else
-      token = Authenticator.generate_token(user)
-      Repo.insert(Ecto.build_assoc(user, :auth_tokens, %{token: token}))
-      render(conn, "login.json", token: token)
+    case Users.sign_in(email, password) do
+      {:ok, auth_token} ->
+        conn
+        |> put_status(:ok)
+        |> render("login.json", auth_token)
+      {:error, reason} ->
+        conn
+        |> send_resp(401, reason)
     end
   end
 

@@ -17,7 +17,7 @@ defmodule TwitterZPhx.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   def sign_in(email, password) do
-    case Comeonin.check_pass(Repo.get_by(User, email: email), password) do
+    case Argon2.check_pass(Repo.get_by(User, email: email), password) do
       {:ok, user} ->
         token = Authenticator.generate_token(user)
         Repo.insert(Ecto.build_assoc(user, :auth_tokens, %{token: token}))

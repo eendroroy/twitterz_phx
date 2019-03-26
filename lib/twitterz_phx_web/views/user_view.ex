@@ -15,9 +15,9 @@ defmodule TwitterZPhxWeb.UserView do
     render_one(user, UserView, "user.json")
   end
 
-  def render("login.json", %{user: user}) do
+  def render("login.json", auth_token) do
     %Document{}
-    |> Document.add_property(:token, user.token)
+    |> Document.add_property(:token, auth_token.token)
   end
 
   def render("user.json", %{user: user}) do
