@@ -23,7 +23,7 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def show(conn, _params) do
-    user = Guardian.Plug.current_resource(conn)
+    user = conn.assigns.signed_user
     conn |> render("show.json", user: user)
   end
 
@@ -40,7 +40,7 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def update(conn, %{"user" => user_params}) do
-    user = Guardian.Plug.current_resource(conn)
+    user = conn.assigns.signed_user
 
     with {:ok, %User{} = user} <- Users.update_user(user, user_params) do
       render(conn, "show.json", user: user)
@@ -48,7 +48,7 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def follow(conn, %{"follow_id" => follow_id}) do
-    user = Guardian.Plug.current_resource(conn)
+    user = conn.assigns.signed_user
     follow = Users.get_user!(follow_id)
     cond do
       user == nil ->
@@ -70,7 +70,7 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def un_follow(conn, %{"follow_id" => follow_id}) do
-    user = Guardian.Plug.current_resource(conn)
+    user = conn.assigns.signed_user
     follow = Users.get_user!(follow_id)
     cond do
       user == nil ->
@@ -92,7 +92,7 @@ defmodule TwitterZPhxWeb.UserController do
   end
 
   def follows(conn, _params) do
-    user = Guardian.Plug.current_resource(conn)
+    user = conn.assigns.signed_user
     user = Repo.preload(user, :follows)
     follows = user.follows
     render(conn, "follows.json", follows: follows)

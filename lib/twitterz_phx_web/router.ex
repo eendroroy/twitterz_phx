@@ -6,7 +6,7 @@ defmodule TwitterZPhxWeb.Router do
   end
 
   pipeline :authenticated do
-    plug TwitterZPhxWeb.Guardian.AuthPipeline
+    plug TwitterZPhx.Plugs.Authenticate
   end
 
   scope "/api", TwitterZPhxWeb do
