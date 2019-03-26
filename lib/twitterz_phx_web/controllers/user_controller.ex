@@ -5,7 +5,7 @@ defmodule TwitterZPhxWeb.UserController do
   alias TwitterZPhx.Repo
   alias TwitterZPhx.Users
   alias TwitterZPhx.Users.User
-  alias TwitterZPhxWeb.Guardian
+  alias TwitterZPhx.Services.Authenticator
 
   action_fallback TwitterZPhxWeb.FallbackController
 
@@ -18,7 +18,6 @@ defmodule TwitterZPhxWeb.UserController do
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
       |> render("show.json", user: user)
     end
   end
@@ -36,13 +35,10 @@ defmodule TwitterZPhxWeb.UserController do
       |> put_view(TwitterZPhxWeb.ErrorView)
       |> render(:"404")
     else
-      with {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
-        with {:ok, %User{} = user} <- Users.update_user(user, %{token: token}) do
-          render(conn, "login.json", user: user)
-        end
-      end
+      token = Authenticator.generate_token(user)
+      Repo.insert(Ecto.build_assoc(user, :auth_tokens, %{token: token}))
+      render(conn, "login.json", token: token)
     end
-
   end
 
   def update(conn, %{"user" => user_params}) do

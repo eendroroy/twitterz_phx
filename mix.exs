@@ -42,6 +42,9 @@ defmodule TwitterZPhx.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:hal, "~> 1.0.0"},
+      {:argon2_elixir, ">= 0.0.0"},
+      {:bcrypt_elixir, ">= 0.0.0"},
+      {:pbkdf2_elixir, ">= 0.0.0"},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
     ]
   end

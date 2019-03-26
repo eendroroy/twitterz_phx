@@ -17,10 +17,7 @@ defmodule TwitterZPhxWeb.UserView do
 
   def render("login.json", %{user: user}) do
     %Document{}
-    |> Document.add_property(:active, user.active)
-    |> Document.add_property(:email, user.email)
     |> Document.add_property(:token, user.token)
-    |> Document.add_link(%Link{rel: :self, href: "/api/users/login"})
   end
 
   def render("user.json", %{user: user}) do

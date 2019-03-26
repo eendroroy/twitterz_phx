@@ -3,11 +3,10 @@ defmodule TwitterZPhx.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :email, :string
-      add :password, :string
       add :name, :string
+      add :email, :string
+      add :password_hash, :string
       add :active, :boolean, default: false, null: false
-      add :token, :text
 
       timestamps()
     end
