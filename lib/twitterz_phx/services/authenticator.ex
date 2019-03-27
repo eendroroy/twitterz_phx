@@ -10,11 +10,11 @@ defmodule TwitterZPhx.Services.Authenticator do
   @secret "CHANGE_ME_k7kTxvFAgeBvAVA0OR1vkPbTi8mZ5m"
 
   def generate_token(id) do
-    Phoenix.Token.sign(@secret, @seed, id, max_age: 86400)
+    Phoenix.Token.sign(@secret, @seed, id, max_age: 86_400)
   end
 
   def verify_token(token) do
-    case Phoenix.Token.verify(@secret, @seed, token, max_age: 86400) do
+    case Phoenix.Token.verify(@secret, @seed, token, max_age: 86_400) do
       {:ok, id} -> {:ok, token}
       error -> error
     end

@@ -11,9 +11,10 @@ defmodule TwitterZPhx.Plugs.Authenticate do
   def call(conn, _default) do
     case Authenticator.get_auth_token(conn) do
       {:ok, token} ->
-        case Repo.get_by(AuthToken, %{token: token, revoked: false}) |> Repo.preload(:user) do
+        auth_token = Repo.get_by(AuthToken, %{token: token, revoked: false})
+        case auth_token do
           nil -> unauthorized(conn)
-          auth_token -> authorized(conn, auth_token.user)
+          auth_token -> authorized(conn, Repo.preload(auth_token, :user).user)
         end
       _ -> unauthorized(conn)
     end

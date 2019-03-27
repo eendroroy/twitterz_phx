@@ -5,7 +5,6 @@ defmodule TwitterZPhxWeb.UserController do
   alias TwitterZPhx.Repo
   alias TwitterZPhx.Users
   alias TwitterZPhx.Users.User
-  alias TwitterZPhx.Services.Authenticator
 
   action_fallback TwitterZPhxWeb.FallbackController
 
