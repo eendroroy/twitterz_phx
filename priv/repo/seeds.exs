@@ -9,3 +9,6 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+TwitterZPhx.Users.create_user(%{name: "user", email: "user@example.com", password: "example1"})
+TwitterZPhx.Users.sign_in("user@example.com", "example1")
