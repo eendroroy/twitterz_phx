@@ -38,3 +38,4 @@ twitterz_phx-*.tar
 # Ide
 .idea
 *.iml
+.elixir_ls
