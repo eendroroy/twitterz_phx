@@ -16,6 +16,8 @@ defmodule TwitterZPhx.Users.User do
     has_many :_follows, TwitterZPhx.Users.Follow
     has_many :follows, through: [:_follows, :follow]
 
+    has_many :tweets, TwitterZPhx.Tweets.Tweet
+
     timestamps()
   end
 
